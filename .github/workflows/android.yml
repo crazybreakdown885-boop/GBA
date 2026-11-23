@@ -23,10 +23,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
       - name: Install Android native build tools
         run: |
-          sdkmanager "ndk;22.1.7171670" "cmake;3.18.1"
+          yes | sdkmanager --licenses
+          sdkmanager "platforms;android-33" "build-tools;33.0.2" "ndk;22.1.7171670" "cmake;3.18.1"
       - name: Install Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
       - name: Brand application
