@@ -1,16 +1,29 @@
-# GBA Enhanced
+# GBA Enhanced (Android)
 
-Android GBA emulator project. The first milestone establishes the Android app, ROM library UI, graphics settings architecture and reproducible APK build. Emulation and per-game enhancement engines are being integrated in subsequent milestones.
+An Android-focused Game Boy Advance emulator build. The emulation engine is **SkyEmu**, an established open-source emulator supporting GBA, GB, GBC and (beta) Nintendo DS. The Android build includes its native emulation core, touchscreen controls, gamepad support, save states, fast-forward/rewind and display shaders.
 
-## Planned features
-- GBA core integration using a redistributable open-source emulator core
-- ROM folder scanning and library
-- Save states and touchscreen controls
-- Optional post-processing effects (depth-style 3D, lighting and shadows)
-- Per-game widescreen patches where available
+## Build and download
 
-## Build
-GitHub Actions builds a debug APK on pushes and publishes an APK asset for version tags.
+Every push to `main` builds an Android release APK using GitHub Actions. Open the **Actions** tab and download the `GBA-Enhanced-APK` artifact. Pushing a tag such as `v0.1.0` creates a GitHub Release with the APK attached.
 
-## Legal
-No commercial My Boy source code or copyrighted game ROMs are included. Users must supply legally obtained ROM files.
+The workflow checks out the reviewed SkyEmu source revision `b64903f0fde8104d0796546b96859e9f682311b7`, changes the displayed app name to GBA Enhanced, and builds its Android project with the Android NDK.
+
+## Current functionality
+
+- Actual GBA emulation via SkyEmu (not a mock screen).
+- Android touchscreen input and supported physical controllers.
+- ROM opening through Android's file picker / file association.
+- Save states, fast-forward, rewind and built-in display shaders from the upstream engine.
+- Game Boy and Game Boy Color support; Nintendo DS support is beta upstream.
+
+## Requested enhancements not yet implemented
+
+- Automatic game analysis that reconstructs 3D geometry from 2D GBA frames. This cannot be made universal by a simple filter; it needs game-specific assets, depth maps or reconstruction profiles.
+- Dynamic 3D scene shadows. The upstream core does not expose a general 3D scene for 2D GBA games.
+- Per-game widescreen hacks. These require game-specific ROM patches or camera/game logic modifications; stretching the original 3:2 image is not equivalent and may distort gameplay.
+
+These features are not represented as working toggles until implemented and tested. Existing display shaders can improve pixel presentation but do not convert a game's artwork into true 3D.
+
+## Licensing
+
+SkyEmu is MIT-licensed. Its source is fetched by the build workflow and its license/copyright notices are retained in the upstream checkout. This project does not bundle commercial My Boy code or copyrighted game ROMs. Supply your own legally obtained ROM files.
