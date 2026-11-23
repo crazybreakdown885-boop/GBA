@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: skylersaleh/SkyEmu
-          ref: dev
+          ref: b64903f0fde8104d0796546b96859e9f682311b7
           path: vendor/SkyEmu
       - uses: actions/setup-java@v4
         with:
