@@ -11,24 +11,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout GBA Enhanced project
+        uses: actions/checkout@v4
+      - name: Checkout SkyEmu emulator engine (MIT)
+        uses: actions/checkout@v4
+        with:
+          repository: skylersaleh/SkyEmu
+          ref: dev
+          path: vendor/SkyEmu
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
-      - name: Build debug APK
-        run: gradle assembleDebug
-      - name: Rename APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk GBA-Enhanced-debug.apk
-      - name: Upload build artifact
+      - name: Install Android native build tools
+        run: |
+          sdkmanager "ndk;22.1.7171670" "cmake;3.18.1"
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Brand application
+        working-directory: vendor/SkyEmu/tools/android_project
+        run: |
+          sed -i 's#<string name="app_name">SkyEmu</string>#<string name="app_name">GBA Enhanced</string>#' app/src/main/res/values/strings.xml
+      - name: Build Android APK
+        working-directory: vendor/SkyEmu/tools/android_project
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleRelease
+      - name: Stage APK
+        run: |
+          APK=$(find vendor/SkyEmu/tools/android_project/app/build/outputs/apk/release -name '*.apk' -type f | head -n 1)
+          test -n "$APK"
+          cp "$APK" GBA-Enhanced.apk
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: GBA-Enhanced-APK
-          path: GBA-Enhanced-debug.apk
+          path: GBA-Enhanced.apk
           if-no-files-found: error
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -36,4 +55,4 @@ jobs:
         with:
           name: GBA Enhanced ${{ github.ref_name }}
           generate_release_notes: true
-          files: GBA-Enhanced-debug.apk
+          files: GBA-Enhanced.apk
