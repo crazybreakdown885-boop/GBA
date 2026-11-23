@@ -5,6 +5,9 @@ on:
     tags: ['v*']
   pull_request:
   workflow_dispatch:
+concurrency:
+  group: gba-android-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: write
 jobs:
@@ -34,6 +37,7 @@ jobs:
         working-directory: vendor/SkyEmu/tools/android_project
         run: |
           sed -i 's#<string name="app_name">SkyEmu</string>#<string name="app_name">GBA Enhanced</string>#' app/src/main/res/values/strings.xml
+          sed -i "s/applicationId = 'com.sky.SkyEmu'/applicationId = 'com.crazybreakdown.gba'/" app/build.gradle
           sed -i 's/abiFilters "arm64-v8a", "x86", "armeabi-v7a", "x86_64"/abiFilters "arm64-v8a", "armeabi-v7a"/' app/build.gradle
       - name: Build Android APK
         working-directory: vendor/SkyEmu/tools/android_project
