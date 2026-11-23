@@ -1,0 +1,1 @@
+The Android emulator engine is SkyEmu by Skyler Saleh, used under the MIT License. The build fetches upstream source at commit b64903f0fde8104d0796546b96859e9f682311b7. See LICENSE for the full MIT license text.
