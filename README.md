@@ -4,7 +4,7 @@ An Android-focused Game Boy Advance emulator build. The emulation engine is **Sk
 
 ## Build and download
 
-Every push to `main` builds an Android release APK using GitHub Actions. Open the **Actions** tab and download the `GBA-Enhanced-APK` artifact. Pushing a tag such as `v0.1.0` creates a GitHub Release with the APK attached.
+Every push to `main` builds an Android release APK using GitHub Actions and updates the `v0.1.1` GitHub Release with the APK attached.
 
 The workflow checks out the reviewed SkyEmu source revision `b64903f0fde8104d0796546b96859e9f682311b7`, changes the displayed app name to GBA Enhanced, and builds its Android project with the Android NDK.
 
@@ -12,7 +12,7 @@ The workflow checks out the reviewed SkyEmu source revision `b64903f0fde8104d079
 
 - Actual GBA emulation via SkyEmu (not a mock screen).
 - Android touchscreen input and supported physical controllers.
-- ROM opening through Android's file picker / file association.
+- ROM opening through Android's file picker / file association, including `.zip` archives containing a `.gba`, `.gb`, `.gbc` or `.nds` ROM (the first supported ROM in the archive is extracted safely).\n- Compact Android interface scaling and Portuguese UI translations when the device language is Portuguese.
 - Save states, fast-forward, rewind and built-in display shaders from the upstream engine.
 - Game Boy and Game Boy Color support; Nintendo DS support is beta upstream.
 
