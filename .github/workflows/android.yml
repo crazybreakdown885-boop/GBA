@@ -39,6 +39,8 @@ jobs:
           sed -i 's#<string name="app_name">SkyEmu</string>#<string name="app_name">GBA Enhanced</string>#' app/src/main/res/values/strings.xml
           sed -i "s/applicationId = 'com.sky.SkyEmu'/applicationId = 'com.crazybreakdown.gba'/" app/build.gradle
           sed -i 's/abiFilters "arm64-v8a", "x86", "armeabi-v7a", "x86_64"/abiFilters "arm64-v8a", "armeabi-v7a"/' app/build.gradle
+      - name: Apply GBA Enhanced customizations
+        run: python3 scripts/customize_android.py
       - name: Build Android APK
         working-directory: vendor/SkyEmu/tools/android_project
         run: |
@@ -60,5 +62,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view v0.1.0 >/dev/null 2>&1 || gh release create v0.1.0 --target "$GITHUB_SHA" --title "GBA Enhanced v0.1.0" --notes "Android GBA emulator build. See README for included features and known limitations."
-          gh release upload v0.1.0 GBA-Enhanced.apk --clobber
+          gh release view v0.1.1 >/dev/null 2>&1 || gh release create v0.1.1 --target "$GITHUB_SHA" --title "GBA Enhanced v0.1.1" --notes "GBA Enhanced v0.1.1: compact Android interface, Portuguese UI, ZIP-contained ROM loading, and SkyEmu emulation engine."
+          gh release upload v0.1.1 GBA-Enhanced.apk --clobber
